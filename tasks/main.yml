@@ -1,0 +1,25 @@
+---
+
+- name: Grafana Install
+  include: "install-{{ ansible_os_family|lower }}.yml"
+
+- name: Update grafana config file
+  template:
+    src:   grafana.ini.j2
+    dest:  /etc/grafana/grafana.ini
+    owner: root
+    group: "{{ grafana_group }}"
+    mode:  0640
+  notify: Restart grafana
+
+- name: Update grafana startup script envrionment variables file
+  template:
+    src:   etc.default.grafana-server.j2
+    dest:  /etc/default/grafana-server
+    owner: root
+    group: root
+    mode:  0644
+  notify: Restart grafana
+
+- name: Start grafana
+  service: name=grafana-server enabled=yes state=started

@@ -1,0 +1,20 @@
+---
+- name: InfluxDB play
+  hosts: test-kitchen
+
+  vars:
+    #telegraf_user: root
+    telegraf_global_tags:
+      machine_role: test-kitchen
+    docker_engine_opts:
+      - '-H tcp://0.0.0.0:2375'
+      - '-H unix:///var/run/docker.sock'
+
+  vars_files:
+    - roles/ansible-grafana/test/plugins-vars.yml
+
+  roles:
+    - wunzeco.docker
+    - wunzeco.influxdb
+    - wunzeco.telegraf
+    - ansible-grafana

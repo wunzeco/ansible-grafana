@@ -1,0 +1,204 @@
+---
+grafana_user:  grafana
+grafana_group: "{{ grafana_user }}"
+
+
+#############
+## Package
+grafana_version: '*'                # e.g. 3.0.4 or '*' for latest
+grafana_signing_key_url: "https://packagecloud.io/gpg.key"
+grafana_apt_repo: "deb https://packagecloud.io/grafana/stable/debian/ wheezy main"
+grafana_yum_repo_baseurl: 'https://repos.influxdata.com/centos/\$releasever/\$basearch/stable'
+
+##############
+## Config
+
+grafana_log_dir:      /var/log/grafana
+grafana_home_dir:     /usr/share/grafana
+grafana_data_dir:     /var/lib/grafana
+grafana_conf_dir:     /etc/grafana
+grafana_plugins_dir:  "{{ grafana_data_dir }}/plugins"       # consider removing this since it is under data_dir
+grafana_conf_file:    "{{ grafana_conf_dir }}/grafana.ini"   # consider removing this since it is under conf_dir
+
+grafana_max_open_files: 10000
+grafana_restart_on_upgrade: false
+
+#################################### Server ####################################
+grafana_server_protocol:          http        # Protocol (http or https)
+grafana_server_http_addr:                     # The ip address to bind to, empty will bind to all interfaces
+grafana_server_http_port:         3000        # The http port  to use
+grafana_server_domain:            localhost   # The public facing domain name used to access grafana from a browser
+grafana_server_enforce_domain:    false       # Redirect to correct domain if host header does not match domain. Prevents DNS rebinding attacks
+grafana_server_root_url:          "%(protocol)s://%(domain)s:%(http_port)s/" # The full public facing url
+grafana_server_router_logging:    false       # Log web requests
+grafana_server_static_root_path:  public      # the path relative working path
+grafana_server_enable_gzip:       false       # enable gzip
+grafana_server_cert_file:                     # https certs file
+grafana_server_cert_key:                      # https key file
+
+################################### Database ###################################
+# Either "mysql", "postgres" or "sqlite3", it's your choice
+grafana_database_type: sqlite3
+grafana_database_host: "127.0.0.1:3306"
+grafana_database_name: grafana
+grafana_database_user: root
+grafana_database_password:
+# For "postgres" only, either "disable", "require" or "verify-full"
+grafana_database_ssl_mode: disable
+# For "sqlite3" only, path relative to data_path setting
+grafana_database_path: grafana.db
+
+# relevant to MySQL config ONLY
+grafana_database_ca_cert_path:
+grafana_database_client_key_path:
+grafana_database_client_cert_path:
+grafana_database_server_cert_name:
+
+#################################### Session ####################################
+grafana_session_provider:         file            # Either "memory", "file", "redis", "mysql", "postgres", default is "file"
+# Provider config options
+# memory: not have any config yet
+# file: session dir path, is relative to grafana data_path
+# redis: config like redis server e.g. `addr=127.0.0.1:6379,pool_size=100,db=grafana`
+# mysql: go-sql-driver/mysql dsn config string, e.g. `user:password@tcp(127.0.0.1:3306)/database_name`
+# postgres: user=a password=b host=localhost port=5432 dbname=c sslmode=disable
+grafana_session_provider_config:  sessions
+grafana_session_cookie_name:      grafana_sess    # Session cookie name
+grafana_session_cookie_secure:    false           # If you use session in https only, default is false
+grafana_session_session_life_time: 86400          # Session life time, default is 86400
+grafana_session_gc_interval_time:  86400
+
+#################################### Analytics ####################################
+grafana_analytics_reporting_enabled: true   # Server reporting, sends usage counters to stats.grafana.org every 24 hours.
+
+# Set to false to disable all checks to https://grafana.net
+# for new vesions (grafana itself and plugins), check is used
+# in some UI views to notify that grafana or plugin update exists
+# This option does not cause any auto updates, nor send any information
+# only a GET request to http://grafana.net to get latest versions
+grafana_analytics_check_for_updates: true
+
+grafana_analytics_google_analytics_ua_id:   # Google Analytics universal tracking code, only enabled if you specify an id here 
+grafana_analytics_google_tag_manager_id:    # Google Tag Manager ID, only enabled if you specify an id here
+
+#################################### Security ####################################
+grafana_security_admin_user: admin                    # default admin user, created on startup
+grafana_security_admin_password: admin                # default admin password, can be changed before first start of grafana,  or in profile settings
+grafana_security_secret_key: SW2YcwTIb9zpOOhoPsMm     # used for signing
+# Auto-login remember days
+grafana_security_login_remember_days: 7
+grafana_security_cookie_username: grafana_user
+grafana_security_cookie_remember_name: grafana_remember
+grafana_security_disable_gravatar: false              # disable gravatar profile images
+grafana_security_data_source_proxy_whitelist:         # data source proxy whitelist (ip_or_domain:port seperated by spaces)
+
+################################# Snapshots ####################################
+# snapshot sharing options
+grafana_snapshots_external_enabled:       true
+grafana_snapshots_external_snapshot_url:  "https://snapshots-origin.raintank.io"
+grafana_snapshots_external_snapshot_name: "Publish to snapshot.raintank.io"
+
+#################################### Users ####################################
+grafana_users_allow_sign_up:        true      # disable user signup / registration
+grafana_users_allow_org_create:     true      # Allow non admin users to create organizations
+grafana_users_auto_assign_org:      true      # Set to true to automatically assign new users to the default organization (id 1)
+grafana_users_auto_assign_org_role: Viewer    # Default role new users will be automatically assigned (if disabled above is set to true)
+grafana_users_verify_email_enabled: false     # Require email validation before sign up completes
+grafana_users_login_hint:           'email or username'   # Background text for the user field on the login page
+
+#################################### Anonymous Auth ##########################
+grafana_auth_anonymous_enabled:   false       # enable anonymous access
+grafana_auth_anonymous_org_name:  "Main Org." # specify organization name that should be used for unauthenticated users
+grafana_auth_anonymous_org_role:  Viewer      # specify role for unauthenticated users
+
+
+#################################### Github Auth ##########################
+grafana_auth_github_enabled:         false
+grafana_auth_github_allow_sign_up:   false
+grafana_auth_github_client_id:       some_id
+grafana_auth_github_client_secret:   some_secret
+grafana_auth_github_scopes:          "user:email,read:org"
+grafana_auth_github_auth_url:        "https://github.com/login/oauth/authorize"
+grafana_auth_github_token_url:       "https://github.com/login/oauth/access_token"
+grafana_auth_github_api_url:         "https://api.github.com/user"
+grafana_auth_github_team_ids:
+grafana_auth_github_allowed_organizations:
+
+#################################### Google Auth ##########################
+grafana_auth_google_enabled:         false
+grafana_auth_google_allow_sign_up:   false
+grafana_auth_google_client_id:       some_client_id
+grafana_auth_google_client_secret:   some_client_secret
+grafana_auth_google_scopes:          "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email"
+grafana_auth_google_auth_url:        "https://accounts.google.com/o/oauth2/auth"
+grafana_auth_google_token_url:       "https://accounts.google.com/o/oauth2/token"
+grafana_auth_google_api_url:         "https://www.googleapis.com/oauth2/v1/userinfo"
+grafana_auth_google_allowed_domains:
+
+#################################### Auth Proxy ##########################
+grafana_auth_proxy_enabled:           false
+grafana_auth_proxy_header_name:       X-WEBAUTH-USER
+grafana_auth_proxy_header_property:   username
+grafana_auth_proxy_auto_sign_up:      true
+
+#################################### Basic Auth ##########################
+grafana_auth_basic_enabled: true
+
+#################################### Auth LDAP ##########################
+grafana_auth_ldap_enabled:      false
+grafana_auth_ldap_config_file:  /etc/grafana/ldap.toml
+
+
+#################################### SMTP / Emailing ##########################
+grafana_smtp_enabled:       false
+grafana_smtp_host:          "localhost:25"
+grafana_smtp_user:
+grafana_smtp_password:
+grafana_smtp_cert_file:
+grafana_smtp_key_file:
+grafana_smtp_skip_verify:   false
+grafana_smtp_from_address:  admin@grafana.localhost
+
+## [emails]
+grafana_emails_welcome_email_on_sign_up: false
+
+#################################### Logging ##########################
+# Either "console", "file", "syslog". Default is console and  file
+# Use comma to separate multiple modes, e.g. "console, file"
+grafana_log_mode:       'console, file'
+grafana_log_buffer_len: 10000           # Buffer length of channel, keep it as it is if you don't know what it is.
+grafana_log_level:      Info            # Either "Trace", "Debug", "Info", "Warn", "Error", "Critical", default is "Info"
+
+##  [log.console]
+grafana_log_console_level:
+
+##  [log.file]
+grafana_log_file_level:
+grafana_log_file_log_rotate:      true      # This enables automated log rotate(switch of following options), default is true
+grafana_log_file_max_lines:       1000000   # Max line number of single file, default is 1000000
+grafana_log_file_max_lines_shift: 28        # Max size shift of single file, default is 28 means 1 << 28, 256MB
+grafana_log_file_daily_rotate:    true      # Segment log daily, default is true
+grafana_log_file_max_days:        7          # Expired days of log file(delete after max days), default is 7
+
+#################################### AMPQ Event Publisher ##########################
+grafana_event_publisher_enabled:        false
+grafana_event_publisher_rabbitmq_url:   "amqp://localhost/"
+grafana_event_publisher_exchange:       grafana_events
+
+#################################### Dashboard JSON files ##########################
+grafana_dashboards_json_enabled:   false
+grafana_dashboards_json_path:      "{{ grafana_data_dir }}/dashboards"
+
+#################################### Usage Quotas ##########################
+grafana_quota_enabled: false
+#### set quotas to -1 to make unlimited. ####
+grafana_quota_org_user:           10     # limit number of users per Org.
+grafana_quota_org_dashboard:      100    # limit number of dashboards per Org.
+grafana_quota_org_data_source:    10     # limit number of data_sources per Org.
+grafana_quota_org_api_key:        10     # limit number of api_keys per Org.
+grafana_quota_user_org:           10     # limit number of orgs a user can create.
+grafana_quota_global_user:        -1     # Global limit of users.
+grafana_quota_global_org:         -1     # global limit of orgs.
+grafana_quota_global_dashboard:   -1     # global limit of dashboards
+grafana_quota_global_api_key:     -1     # global limit of api_keys
+grafana_quota_global_session:     -1     # global limit on number of logged in users.

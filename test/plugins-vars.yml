@@ -1,0 +1,38 @@
+telegraf_outputs:     # e.g. influxdb, cloudwatch, amon etc
+  - name: influxdb
+    urls: [ "http://localhost:8086" ] # required
+    database: "telegraf" # required
+    retention_policy: "default"
+    precision: "s"
+    timeout: "5s"
+
+
+
+telegraf_default_inputs:
+  # Read metrics about cpu usage
+  - name: cpu
+    percpu: true
+    totalcpu: true
+    fielddrop: ["time_*"]
+  - name: disk
+    ignore_fs: ["tmpfs", "devtmpfs"]
+  - name: diskio
+  - name: kernel
+  - name: mem
+  - name: processes
+  - name: swap
+  - name: system
+  
+
+telegraf_inputs:
+  # Read metrics about docker containers
+  - name: docker
+    #endpoint: "unix:///var/run/docker.sock"
+    endpoint: "tcp://localhost:2375"
+    container_names: []
+    timeout: "5s"
+  - name: filestat
+    files: ["/var/log/**.log"]
+    md5: false
+  - name: influxdb
+    urls: [ "http://localhost:8086/debug/vars" ]

@@ -1,0 +1,19 @@
+GRAFANA_USER={{ grafana_user }}
+
+GRAFANA_GROUP={{ grafana_group }}
+
+GRAFANA_HOME={{ grafana_home_dir }}
+
+LOG_DIR={{ grafana_log_dir }}
+
+DATA_DIR={{ grafana_data_dir }}
+
+MAX_OPEN_FILES={{ grafana_max_open_files|int }}
+
+CONF_DIR={{ grafana_conf_dir }}
+
+CONF_FILE={{ grafana_conf_dir }}/grafana.ini
+
+RESTART_ON_UPGRADE={{ grafana_restart_on_upgrade|default(false)|bool|lower }}
+
+PLUGINS_DIR={{ grafana_data_dir }}/plugins
