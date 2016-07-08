@@ -3,6 +3,7 @@
   hosts: test-kitchen
 
   vars:
+    grafana_auth_ldap_enabled: true
     #telegraf_user: root
     telegraf_global_tags:
       machine_role: test-kitchen

@@ -10,8 +10,8 @@ grafana_signing_key_url: "https://packagecloud.io/gpg.key"
 grafana_apt_repo: "deb https://packagecloud.io/grafana/stable/debian/ wheezy main"
 grafana_yum_repo_baseurl: 'https://repos.influxdata.com/centos/\$releasever/\$basearch/stable'
 
-##############
-## Config
+#################
+## Configuration
 
 grafana_log_dir:      /var/log/grafana
 grafana_home_dir:     /usr/share/grafana
@@ -55,27 +55,15 @@ grafana_database_client_cert_path:
 grafana_database_server_cert_name:
 
 #################################### Session ####################################
-grafana_session_provider:         file            # Either "memory", "file", "redis", "mysql", "postgres", default is "file"
-# Provider config options
-# memory: not have any config yet
-# file: session dir path, is relative to grafana data_path
-# redis: config like redis server e.g. `addr=127.0.0.1:6379,pool_size=100,db=grafana`
-# mysql: go-sql-driver/mysql dsn config string, e.g. `user:password@tcp(127.0.0.1:3306)/database_name`
-# postgres: user=a password=b host=localhost port=5432 dbname=c sslmode=disable
-grafana_session_provider_config:  sessions
-grafana_session_cookie_name:      grafana_sess    # Session cookie name
-grafana_session_cookie_secure:    false           # If you use session in https only, default is false
-grafana_session_session_life_time: 86400          # Session life time, default is 86400
-grafana_session_gc_interval_time:  86400
+grafana_session_provider:           file            # Either "memory", "file", "redis", "mysql", "postgres", default is "file"
+grafana_session_provider_config:    sessions
+grafana_session_cookie_name:        grafana_sess    # Session cookie name
+grafana_session_cookie_secure:      false           # If you use session in https only, default is false
+grafana_session_session_life_time:  86400           # Session life time, default is 86400
+grafana_session_gc_interval_time:   86400
 
 #################################### Analytics ####################################
 grafana_analytics_reporting_enabled: true   # Server reporting, sends usage counters to stats.grafana.org every 24 hours.
-
-# Set to false to disable all checks to https://grafana.net
-# for new vesions (grafana itself and plugins), check is used
-# in some UI views to notify that grafana or plugin update exists
-# This option does not cause any auto updates, nor send any information
-# only a GET request to http://grafana.net to get latest versions
 grafana_analytics_check_for_updates: true
 
 grafana_analytics_google_analytics_ua_id:   # Google Analytics universal tracking code, only enabled if you specify an id here 
@@ -146,7 +134,51 @@ grafana_auth_basic_enabled: true
 
 #################################### Auth LDAP ##########################
 grafana_auth_ldap_enabled:      false
-grafana_auth_ldap_config_file:  /etc/grafana/ldap.toml
+grafana_auth_ldap_config_file:  "{{ grafana_conf_dir }}/ldap.toml"
+
+
+###### ldap.toml #######
+grafana_ldap_verbose_logging: false    # Set to true to log user information returned from LDAP
+
+##  [[servers]]
+grafana_ldap_servers_host:            "127.0.0.1" # Ldap server host (specify multiple hosts space separated)
+grafana_ldap_servers_port:            389         # Default port is 389 or 636 if use_ssl = true
+grafana_ldap_servers_use_ssl:         false       # Set to true if ldap server supports TLS
+grafana_ldap_servers_ssl_skip_verify: false       # set to true if you want to skip ssl cert validation
+grafana_ldap_servers_root_ca_cert:                # set to the path to your root CA certificate or leave unset to use system defaults
+                                                  # root_ca_cert = /path/to/certificate.crt
+
+grafana_ldap_servers_bind_dn: "cn=admin,dc=grafana,dc=org"  # Search user bind dn
+grafana_ldap_servers_bind_password: 'grafana'               # Search user bind password
+
+grafana_ldap_servers_search_filter: "(cn=%s)"     # User search filter, for example "(cn=%s)" or "(sAMAccountName=%s)" or "(uid=%s)"
+grafana_ldap_servers_search_base_dns:             # An array of base dns to search through
+  - "dc=grafana,dc=org" 
+
+## Group search filter, to retrieve the groups of which the user is a member (only set if memberOf attribute is not available)
+# group_search_filter = "(&(objectClass=posixGroup)(memberUid=%s))"
+group_search_filter:
+
+## An array of the base DNs to search through for groups. Typically uses ou=groups
+# group_search_base_dns = ["ou=groups,dc=grafana,dc=org"]
+group_search_base_dns: []
+
+# Specify names of the ldap attributes your ldap uses
+grafana_ldap_servers_attributes_name:        "givenName"
+grafana_ldap_servers_attributes_surname:     "sn"
+grafana_ldap_servers_attributes_username:    "cn"
+grafana_ldap_servers_attributes_member_of:   "memberOf"
+grafana_ldap_servers_attributes_email:       "email"
+
+# Map ldap groups to grafana org roles
+grafana_ldap_servers_group_mappings:
+  - group_dn: "cn=admins,dc=grafana,dc=org"
+    org_role: "Admin"
+    org_id:   1         # The Grafana organization database id, optional, if left out the default org (id 1) will be used
+  - group_dn: "cn=users,dc=grafana,dc=org"
+    org_role: "Editor"
+  - group_dn: "*"       # If you want to match all (or no ldap groups) then you can use wildcard
+    org_role: "Viewer"
 
 
 #################################### SMTP / Emailing ##########################
