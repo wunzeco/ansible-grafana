@@ -10,6 +10,10 @@ grafana_signing_key_url: "https://packagecloud.io/gpg.key"
 grafana_apt_repo: "deb https://packagecloud.io/grafana/stable/debian/ wheezy main"
 grafana_yum_repo_baseurl: 'https://repos.influxdata.com/centos/\$releasever/\$basearch/stable'
 
+grafana_plugins_install: []
+grafana_plugins_remove:  []
+grafana_update_plugins:  false
+
 #################
 ## Configuration
 

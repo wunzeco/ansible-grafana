@@ -1,0 +1,28 @@
+---
+
+- name: Get list of installed grafana plugins
+  shell: >
+      grafana-cli plugins ls | grep '@' | sed 's/\(.*\) @.*/\1/'
+  register: plugins
+
+- debug: var=plugins.stdout_lines
+
+- name: Install grafana plugins
+  shell: >
+      grafana-cli plugins install "{{ item }}"
+  with_items: "{{ grafana_plugins_install }}"
+  when: item not in plugins.stdout_lines and item not in grafana_plugins_remove
+  notify: Restart grafana
+
+- name: Remove grafana plugins
+  shell: >
+      grafana-cli plugins remove "{{ item }}"
+  with_items: "{{ grafana_plugins_remove }}"
+  when: item in plugins.stdout_lines
+  notify: Restart grafana
+
+- name: Update grafana plugins
+  shell: >
+      grafana-cli plugins update-all
+  when: grafana_update_plugins
+  notify: Restart grafana
