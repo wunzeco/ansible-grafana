@@ -1,0 +1,29 @@
+---
+
+## yum_repository available in Ansible v2.0.x or earlier
+##
+#- name: Add grafana yum repository file
+#  yum_repository:
+#    name: grafana
+#    description: Grafana repository
+#    baseurl:   "{{ grafana_yum_repo_baseurl }}"
+#    gpgkey:    "{{ grafana_signing_key_url }} https://grafanarel.s3.amazonaws.com/RPM-GPG-KEY-grafana"
+#    gpgcheck:  yes
+#    enabled:   yes
+#    sslverify: yes
+#    sslcacert: /etc/pki/tls/certs/ca-bundle.crt
+#    repo_gpgcheck: yes
+
+- name: Add grafana yum repository
+  template:
+    src:   grafana.yum.repo.j2
+    dest:  /etc/yum.repos.d/grafana.repo
+    owner: root
+    group: root
+    mode:  0644
+
+- name: Install grafana
+  yum:
+    name:  "grafana-{{ grafana_version|default('*') }}"
+    update_cache: yes
+    state: present

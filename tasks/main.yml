@@ -22,10 +22,13 @@
   when: grafana_auth_ldap_enabled
   notify: Restart grafana
 
+- set_fact: _startup_env_vars_dir=/etc/sysconfig
+  when: ansible_os_family|lower == 'redhat'
+
 - name: Update grafana startup script envrionment variables file
   template:
     src:   etc.default.grafana-server.j2
-    dest:  /etc/default/grafana-server
+    dest:  "{{ _startup_env_vars_dir|default('/etc/default') }}/grafana-server"
     owner: root
     group: root
     mode:  0644

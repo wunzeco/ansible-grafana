@@ -1,0 +1,9 @@
+[grafana]
+name    =  Grafana Repository
+baseurl = {{ grafana_yum_repo_baseurl }}
+repo_gpgcheck = 1
+enabled   = 1
+gpgcheck  = 1
+gpgkey    = {{ grafana_signing_key_url }} https://grafanarel.s3.amazonaws.com/RPM-GPG-KEY-grafana
+sslverify = 1
+sslcacert = /etc/pki/tls/certs/ca-bundle.crt

@@ -8,7 +8,7 @@ grafana_group: "{{ grafana_user }}"
 grafana_version: '*'                # e.g. 3.0.4 or '*' for latest
 grafana_signing_key_url: "https://packagecloud.io/gpg.key"
 grafana_apt_repo: "deb https://packagecloud.io/grafana/stable/debian/ wheezy main"
-grafana_yum_repo_baseurl: 'https://repos.influxdata.com/centos/\$releasever/\$basearch/stable'
+grafana_yum_repo_baseurl: 'https://packagecloud.io/grafana/stable/el/6/$basearch'
 
 grafana_plugins_install: []
 grafana_plugins_remove:  []
@@ -159,13 +159,9 @@ grafana_ldap_servers_search_filter: "(cn=%s)"     # User search filter, for exam
 grafana_ldap_servers_search_base_dns:             # An array of base dns to search through
   - "dc=grafana,dc=org" 
 
-## Group search filter, to retrieve the groups of which the user is a member (only set if memberOf attribute is not available)
-# group_search_filter = "(&(objectClass=posixGroup)(memberUid=%s))"
-group_search_filter:
-
-## An array of the base DNs to search through for groups. Typically uses ou=groups
-# group_search_base_dns = ["ou=groups,dc=grafana,dc=org"]
-group_search_base_dns: []
+grafana_ldap_servers_group_search_filter:         # Group search filter, to retrieve the groups of which the user is a member
+grafana_ldap_servers_group_search_base_dns: []    # An array of the base DNs to search through for groups. Typically uses ou=groups
+grafana_ldap_servers_group_search_filter_user_attribute:
 
 # Specify names of the ldap attributes your ldap uses
 grafana_ldap_servers_attributes_name:        "givenName"
