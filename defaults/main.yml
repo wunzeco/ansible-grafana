@@ -12,7 +12,7 @@ grafana_yum_repo_baseurl: 'https://packagecloud.io/grafana/stable/el/6/$basearch
 
 grafana_plugins_install: []
 grafana_plugins_remove:  []
-grafana_update_plugins:  false
+grafana_update_plugins:  true
 
 #################
 ## Configuration

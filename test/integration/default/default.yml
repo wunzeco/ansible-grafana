@@ -11,7 +11,6 @@
     grafana_plugins_remove:
       - grafana-example-app
     grafana_auth_ldap_enabled: true
-    #telegraf_user: root
     telegraf_global_tags:
       machine_role: test-kitchen
     docker_engine_opts:

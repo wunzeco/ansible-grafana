@@ -19,8 +19,23 @@
   when: item in plugins.stdout_lines
   notify: Restart grafana
 
+- name: Get versions of installed grafana plugins pre update
+  shell: >
+      grafana-cli plugins ls | grep '@'
+  register: versions_pre_update
+
 - name: Update grafana plugins
   shell: >
       grafana-cli plugins update-all
   when: grafana_update_plugins
+
+- name: Get versions of installed grafana plugins post update
+  shell: >
+      grafana-cli plugins ls | grep '@'
+  when: grafana_update_plugins
+  register: versions_post_update
+
+- name: Trigger grafana restart if grafana plugins updated
+  set_fact: restart_grafana=true
+  when: versions_pre_update.stdout != versions_post_update.stdout
   notify: Restart grafana
