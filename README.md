@@ -16,6 +16,9 @@ Ansible role to install and configure Grafana.
     - wunzeco.grafana
 ```
 
+By default, grafana plugins are updated if an update is available. This may be
+turned off by setting `grafana_update_plugins` to `false`.
+
 
 ## Testing
 
