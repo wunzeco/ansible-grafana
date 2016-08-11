@@ -28,6 +28,7 @@
   shell: >
       grafana-cli plugins update-all
   when: grafana_update_plugins
+  ignore_errors: true
 
 - name: Get versions of installed grafana plugins post update
   shell: >
