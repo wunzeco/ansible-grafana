@@ -21,6 +21,7 @@ grafana_log_dir:      /var/log/grafana
 grafana_home_dir:     /usr/share/grafana
 grafana_data_dir:     /var/lib/grafana
 grafana_conf_dir:     /etc/grafana
+grafana_pid_dir:      /run/grafana
 grafana_plugins_dir:  "{{ grafana_data_dir }}/plugins"       # consider removing this since it is under data_dir
 grafana_conf_file:    "{{ grafana_conf_dir }}/grafana.ini"   # consider removing this since it is under conf_dir
 

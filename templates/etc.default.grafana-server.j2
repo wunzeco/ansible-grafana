@@ -17,3 +17,5 @@ CONF_FILE={{ grafana_conf_dir }}/grafana.ini
 RESTART_ON_UPGRADE={{ grafana_restart_on_upgrade|default(false)|bool|lower }}
 
 PLUGINS_DIR={{ grafana_data_dir }}/plugins
+
+PID_FILE_DIR={{ grafana_pid_dir }}
