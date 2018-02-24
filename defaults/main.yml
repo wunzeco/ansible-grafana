@@ -8,6 +8,7 @@ grafana_group: "{{ grafana_user }}"
 grafana_version: '*'                # e.g. 3.0.4 or '*' for latest
 grafana_signing_key_url: "https://packagecloud.io/gpg.key"
 grafana_apt_repo: "deb https://packagecloud.io/grafana/stable/debian/ wheezy main"
+grafana_yum_signing_key_url: "https://grafanarel.s3.amazonaws.com/RPM-GPG-KEY-grafana"
 grafana_yum_repo_baseurl: 'https://packagecloud.io/grafana/stable/el/6/$basearch'
 
 grafana_plugins_install: []
@@ -71,7 +72,7 @@ grafana_session_gc_interval_time:   86400
 grafana_analytics_reporting_enabled: true   # Server reporting, sends usage counters to stats.grafana.org every 24 hours.
 grafana_analytics_check_for_updates: true
 
-grafana_analytics_google_analytics_ua_id:   # Google Analytics universal tracking code, only enabled if you specify an id here 
+grafana_analytics_google_analytics_ua_id:   # Google Analytics universal tracking code, only enabled if you specify an id here
 grafana_analytics_google_tag_manager_id:    # Google Tag Manager ID, only enabled if you specify an id here
 
 #################################### Security ####################################
@@ -158,7 +159,7 @@ grafana_ldap_servers_bind_password: 'grafana'               # Search user bind p
 
 grafana_ldap_servers_search_filter: "(cn=%s)"     # User search filter, for example "(cn=%s)" or "(sAMAccountName=%s)" or "(uid=%s)"
 grafana_ldap_servers_search_base_dns:             # An array of base dns to search through
-  - "dc=grafana,dc=org" 
+  - "dc=grafana,dc=org"
 
 grafana_ldap_servers_group_search_filter:         # Group search filter, to retrieve the groups of which the user is a member
 grafana_ldap_servers_group_search_base_dns: []    # An array of the base DNs to search through for groups. Typically uses ou=groups

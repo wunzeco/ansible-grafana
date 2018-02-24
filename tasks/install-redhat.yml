@@ -1,34 +1,31 @@
 ---
 
-## yum_repository available in Ansible v2.0.x or earlier
-##
-#- name: Add grafana yum repository file
-#  yum_repository:
-#    name: grafana
-#    description: Grafana repository
-#    baseurl:   "{{ grafana_yum_repo_baseurl }}"
-#    gpgkey:    "{{ grafana_signing_key_url }} https://grafanarel.s3.amazonaws.com/RPM-GPG-KEY-grafana"
-#    gpgcheck:  yes
-#    enabled:   yes
-#    sslverify: yes
-#    sslcacert: /etc/pki/tls/certs/ca-bundle.crt
-#    repo_gpgcheck: yes
+- name: Add grafana yum repository file
+  yum_repository:
+    name: grafana
+    description: Grafana repository
+    baseurl:   "{{ grafana_yum_repo_baseurl }}"
+    gpgkey:    "{{ grafana_signing_key_url }} {{ grafana_yum_signing_key_url }}"
+    gpgcheck:  yes
+    enabled:   yes
+    sslverify: yes
+    sslcacert: /etc/pki/tls/certs/ca-bundle.crt
+    repo_gpgcheck: yes
 
-- name: Add grafana yum repository
-  template:
-    src:   grafana.yum.repo.j2
-    dest:  /etc/yum.repos.d/grafana.repo
-    owner: root
-    group: root
-    mode:  0644
-
-- name: import rpm keys
-  rpm_key: state=present key={{ item }}
+- name: Import grafana rpm keys
+  rpm_key:
+    state: present
+    key: "{{ item }}"
   with_items:
-    - https://grafanarel.s3.amazonaws.com/RPM-GPG-KEY-grafana
+    - "{{ grafana_signing_key_url }}"
+    - "{{ grafana_yum_signing_key_url }}"
+  register: import_key
 
-- name: update repo cache for the new repo
+# Note: The task following task is a workaround for the error below:
+#       "Failure talking to yum: failure: repodata/repomd.xml from grafana: [Errno 256] No more mirrors to try.\nhttps://packagecloud.io/grafana/stable/el/6/x86_64/repodata/repomd.xml: [Errno -1] repomd.xml signature could not be verified for grafana"
+- name: Update repo cache for grafana repo
   command: yum -q makecache -y --disablerepo=* --enablerepo=grafana
+  when: import_key|changed
 
 - name: Install grafana
   yum:

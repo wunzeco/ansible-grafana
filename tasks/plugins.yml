@@ -1,10 +1,10 @@
 ---
 - name: Create plugin directory
   file:
-    state: directory
-    path: "{{ grafana_plugins_dir }}"
-    owner: "{{ grafana_user }}" 
+    path:  "{{ grafana_plugins_dir }}"
+    owner: "{{ grafana_user }}"
     group: "{{ grafana_group }}"
+    state: directory
 
 - name: Get list of installed grafana plugins
   shell: >
