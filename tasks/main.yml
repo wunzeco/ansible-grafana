@@ -1,7 +1,7 @@
 ---
 
 - name: Grafana Install
-  include: "install-{{ ansible_os_family|lower }}.yml"
+  include_tasks: "install-{{ ansible_os_family|lower }}.yml"
 
 - name: Create grafana config file
   template:
@@ -38,4 +38,6 @@
   service: name=grafana-server enabled=yes state=started
 
 - name: Grafana plugins
-  include: plugins.yml
+  import_tasks: plugins.yml
+  tags:
+    - grafana_install_plugins 

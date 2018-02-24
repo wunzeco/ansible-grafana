@@ -1,4 +1,10 @@
 ---
+- name: Create plugin directory
+  file:
+    state: directory
+    path: "{{ grafana_plugins_dir }}"
+    owner: "{{ grafana_user }}" 
+    group: "{{ grafana_group }}"
 
 - name: Get list of installed grafana plugins
   shell: >
@@ -22,21 +28,22 @@
 - name: Get versions of installed grafana plugins pre update
   shell: >
       grafana-cli plugins ls | grep '@'
+  when: plugins.stdout_lines|count > 0
   register: versions_pre_update
 
 - name: Update grafana plugins
   shell: >
       grafana-cli plugins update-all
-  when: grafana_update_plugins
+  when: grafana_update_plugins and plugins.stdout_lines|count > 0
   ignore_errors: true
 
 - name: Get versions of installed grafana plugins post update
   shell: >
       grafana-cli plugins ls | grep '@'
-  when: grafana_update_plugins
+  when: grafana_update_plugins and plugins.stdout_lines|count > 0
   register: versions_post_update
 
 - name: Trigger grafana restart if grafana plugins updated
   set_fact: restart_grafana=true
-  when: versions_pre_update.stdout != versions_post_update.stdout
+  when: plugins.stdout_lines|count > 0 and versions_pre_update.stdout != versions_post_update.stdout
   notify: Restart grafana

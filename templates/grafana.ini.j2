@@ -52,8 +52,8 @@ static_root_path = {{ grafana_server_static_root_path }}
 enable_gzip = {{ grafana_server_enable_gzip|default(false)|bool|lower }}
 
 # https certs & key file
-cert_file = {{ grafana_cert_file|default('') }}
-cert_key = {{ grafana_cert_key|default('') }}
+cert_file = {{ grafana_server_cert_file|default('') }}
+cert_key = {{ grafana_server_cert_key|default('') }}
 
 #################################### Database ####################################
 [database]
