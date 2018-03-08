@@ -3,7 +3,7 @@
   hosts: test-kitchen
 
   vars:
-    grafana_plugins_install: 
+    grafana_plugins_install:
       - grafana-piechart-panel
       - grafana-worldmap-panel
       - grafana-clock-panel
@@ -13,6 +13,8 @@
     grafana_auth_ldap_enabled: true
     telegraf_global_tags:
       machine_role: test-kitchen
+    docker_package: docker-ce
+    docker_package_version: '*'
     docker_engine_opts:
       - '-H tcp://0.0.0.0:2375'
       - '-H unix:///var/run/docker.sock'
