@@ -32,3 +32,4 @@
     name:  "grafana-{{ grafana_version|default('*') }}"
     update_cache: yes
     state: present
+  notify: Restart grafana
