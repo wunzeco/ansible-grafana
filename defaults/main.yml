@@ -206,15 +206,18 @@ grafana_auth_ldap_config_file:  "{{ grafana_conf_dir }}/ldap.toml"
 grafana_auth_ldap_allow_sign_up:
 
 ###### ldap.toml #######
-grafana_ldap_verbose_logging: false    # Set to true to log user information returned from LDAP
+grafana_ldap_log_enabled: false
 
 ##  [[servers]]
 grafana_ldap_servers_host:            "127.0.0.1" # Ldap server host (specify multiple hosts space separated)
 grafana_ldap_servers_port:            389         # Default port is 389 or 636 if use_ssl = true
 grafana_ldap_servers_use_ssl:         false       # Set to true if ldap server supports TLS
+grafana_ldap_servers_start_tls:       false
 grafana_ldap_servers_ssl_skip_verify: false       # set to true if you want to skip ssl cert validation
 grafana_ldap_servers_root_ca_cert:                # set to the path to your root CA certificate or leave unset to use system defaults
                                                   # root_ca_cert = /path/to/certificate.crt
+grafana_ldap_servers_client_cert:
+grafana_ldap_servers_client_key:
 
 grafana_ldap_servers_bind_dn: "cn=admin,dc=grafana,dc=org"  # Search user bind dn
 grafana_ldap_servers_bind_password: 'grafana'               # Search user bind password
