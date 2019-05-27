@@ -232,10 +232,10 @@ external_manage_link_name = {{ grafana_users_external_manage_link_name|default('
 external_manage_info = {{ grafana_users_external_manage_info|default('') }}
 
 # Viewers can edit/inspect dashboard settings in the browser. But not save the dashboard.
-viewers_can_edit = {{ grafana_users_viewers_can_edit|defaulf(false)|bool|lower }}
+viewers_can_edit = {{ grafana_users_viewers_can_edit|default(false)|bool|lower }}
 
 # Editors can administrate dashboard, folders and teams they create
-editors_can_admin = {{ grafana_users_editors_can_admin|defaulf(false)|bool|lower }}
+editors_can_admin = {{ grafana_users_editors_can_admin|default(false)|bool|lower }}
 
 [auth]
 # Login cookie name
@@ -251,17 +251,17 @@ login_maximum_lifetime_days = {{ grafana_users_auth_login_maximum_lifetime_days 
 token_rotation_interval_minutes = {{ grafana_users_auth_token_rotation_interval_minutes }}
 
 # Set to true to disable (hide) the login form, useful if you use OAuth, defaults to false
-disable_login_form = {{ grafana_users_auth_disable_login_form|defaulf(false)|bool|lower }}
+disable_login_form = {{ grafana_users_auth_disable_login_form|default(false)|bool|lower }}
 
 # Set to true to disable the signout link in the side menu. useful if you use auth.proxy, defaults to false
-disable_signout_menu = {{ grafana_users_auth_disable_signout_menu|defaulf(false)|bool|lower }}
+disable_signout_menu = {{ grafana_users_auth_disable_signout_menu|default(false)|bool|lower }}
 
 # URL to redirect the user to after sign out
 signout_redirect_url = {{ grafana_users_auth_signout_redirect_url|default('') }}
 
 # Set to true to attempt login with OAuth automatically, skipping the login screen.
 # This setting is ignored if multiple OAuth providers are configured.
-oauth_auto_login = {{ grafana_users_auth_oauth_auto_login|defaulf(false)|bool|lower }}
+oauth_auto_login = {{ grafana_users_auth_oauth_auto_login|default(false)|bool|lower }}
 
 #################################### Anonymous Auth ##########################
 [auth.anonymous]
