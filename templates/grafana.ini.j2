@@ -416,70 +416,70 @@ level = {{ grafana_log_syslog_level|default('') }}
 format = {{ grafana_log_syslog_format }}
 
 # Syslog network type and address. This can be udp, tcp, or unix. If left blank, the default unix endpoints will be used.
-;network =
-;address =
+network = {{ grafana_log_syslog_network|default('') }}
+address = {{ grafana_log_syslog_address|default('') }}
 
 # Syslog facility. user, daemon and local0 through local7 are valid.
-;facility =
+facility = {{ grafana_log_syslog_facility|default('') }}
 
 # Syslog tag. By default, the process' argv[0] is used.
-;tag =
+tag = {{ grafana_log_syslog_tag|default('') }}
 
 #################################### Alerting ############################
 [alerting]
 # Disable alerting engine & UI features
-;enabled = true
+enabled = {{ grafana_alerting_enabled|default(true)|bool|lower }}
 # Makes it possible to turn off alert rule execution but alerting UI is visible
-;execute_alerts = true
+execute_alerts = {{ grafana_alerting_execute_alerts|default(true)|bool|lower }}
 
 # Default setting for new alert rules. Defaults to categorize error and timeouts as alerting. (alerting, keep_state)
-;error_or_timeout = alerting
+error_or_timeout = {{ grafana_alerting_error_or_timeout }}
 
 # Default setting for how Grafana handles nodata or null values in alerting. (alerting, no_data, keep_state, ok)
-;nodata_or_nullvalues = no_data
+nodata_or_nullvalues = {{ grafana_alerting_nodata_or_nullvalues }}
 
 # Alert notifications can include images, but rendering many images at the same time can overload the server
 # This limit will protect the server from render overloading and make sure notifications are sent out quickly
-;concurrent_render_limit = 5
+concurrent_render_limit = {{ grafana_alerting_concurrent_render_limit }}
 
 
 # Default setting for alert calculation timeout. Default value is 30
-;evaluation_timeout_seconds = 30
+evaluation_timeout_seconds = {{ grafana_alerting_evaluation_timeout_seconds }}
 
 # Default setting for alert notification timeout. Default value is 30
-;notification_timeout_seconds = 30
+notification_timeout_seconds = {{ grafana_alerting_notification_timeout_seconds }}
 
 # Default setting for max attempts to sending alert notifications. Default value is 3
-;max_attempts = 3
+max_attempts = {{ grafana_alerting_max_attempts }}
 
 #################################### Explore #############################
 [explore]
 # Enable the Explore section
-;enabled = true
+enabled = {{ grafana_explore_enabled|default(true)|bool|lower }}
 
 #################################### Internal Grafana Metrics ##########################
 # Metrics available at HTTP API Url /metrics
 [metrics]
 # Disable / Enable internal metrics
-;enabled           = true
+enabled           = {{ grafana_metrics_enabled|default(true)|bool|lower }}
 
 # Publish interval
-;interval_seconds  = 10
+interval_seconds  = {{ grafana_metrics_interval_seconds }}
 
 # Send internal metrics to Graphite
 [metrics.graphite]
 # Enable by setting the address setting (ex localhost:2003)
-;address =
-;prefix = prod.grafana.%(instance_name)s.
+address = {{ grafana_metrics_graphite_address|default('') }}
+prefix = {{ grafana_metrics_graphite_prefix }} 
 
 #################################### Distributed tracing ############
 [tracing.jaeger]
 # Enable by setting the address sending traces to jaeger (ex localhost:6831)
-;address = localhost:6831
+address = {{ grafana_tracing_jaeger_address }}
 # Tag that will always be included in when creating new spans. ex (tag1:value1,tag2:value2)
-;always_included_tag = tag1:value1
+always_included_tag = {{ grafana_tracing_jaeger_always_included_tag }}
 # Type specifies the type of the sampler: const, probabilistic, rateLimiting, or remote
-;sampler_type = const
+sampler_type = {{ grafana_tracing_jaeger_sampler_type }}
 # jaeger samplerconfig param
 # for "const" sampler, 0 or 1 for always false/true respectively
 # for "probabilistic" sampler, a probability between 0 and 1
@@ -487,58 +487,58 @@ format = {{ grafana_log_syslog_format }}
 # for "remote" sampler, param is the same as for "probabilistic"
 # and indicates the initial sampling rate before the actual one
 # is received from the mothership
-;sampler_param = 1
+sampler_param = {{ grafana_tracing_jaeger_sampler_param }}
 
 #################################### Grafana.com integration  ##########################
 # Url used to import dashboards directly from Grafana.com
 [grafana_com]
-;url = https://grafana.com
+url = {{ grafana_dashboard_import_url }}
 
 #################################### External image storage ##########################
 [external_image_storage]
 # Used for uploading images to public servers so they can be included in slack/email messages.
 # you can choose between (s3, webdav, gcs, azure_blob, local)
-;provider =
+provider = {{ grafana_external_image_storage_provider|default('') }}
 
 [external_image_storage.s3]
-;bucket =
-;region =
-;path =
-;access_key =
-;secret_key =
+bucket = {{ grafana_external_image_storage_s3_bucket|default('') }}
+region = {{ grafana_external_image_storage_s3_region|default('') }}
+path = {{ grafana_external_image_storage_s3_path|default('') }}
+access_key = {{ grafana_external_image_storage_s3_access_key|default('') }}
+secret_key = {{ grafana_external_image_storage_s3_secret_key|default('') }}
 
 [external_image_storage.webdav]
-;url =
-;public_url =
-;username =
-;password =
+url = {{ grafana_external_image_storage_webdav_url|default('') }}
+public_url = {{ grafana_external_image_storage_webdav_public_url|default('') }}
+username = {{ grafana_external_image_storage_webdav_username|default('') }}
+password = {{ grafana_external_image_storage_webdav_password|default('') }}
 
 [external_image_storage.gcs]
-;key_file =
-;bucket =
-;path =
+key_file = {{ grafana_external_image_storage_gcs_key_file|default('') }}
+bucket = {{ grafana_external_image_storage_gcs_bucket|default('') }}
+path = {{ grafana_external_image_storage_gcs_path|default('') }}
 
 [external_image_storage.azure_blob]
-;account_name =
-;account_key =
-;container_name =
+account_name = {{ grafana_external_image_storage_azure_blob_account_name|default('') }}
+account_key = {{ grafana_external_image_storage_azure_blob_account_key|default('') }}
+container_name = {{ grafana_external_image_storage_azure_blob_container_name|default('') }}
 
 [external_image_storage.local]
 # does not require any configuration
 
 [rendering]
 # Options to configure external image rendering server like https://github.com/grafana/grafana-image-renderer
-;server_url =
-;callback_url =
+server_url = {{ grafana_external_image_storage_rendering_server_url|default('') }}
+callback_url = {{ grafana_external_image_storage_rendering_callback_url|default('') }}
 
 [enterprise]
 # Path to a valid Grafana Enterprise license.jwt file
-;license_path =
+license_path = {{ grafana_external_image_storage_enterprise_license_path|default('') }}
 
 [panels]
 # If set to true Grafana will allow script tags in text panels. Not recommended as it enable XSS vulnerabilities.
-;disable_sanitize_html = false
+disable_sanitize_html = {{ grafana_external_image_storage_panels_disable_sanitize_html|default(false)|bool|lower }}
 
 [plugins]
-;enable_alpha = false
-;app_tls_skip_verify_insecure = false
+enable_alpha = {{ grafana_external_image_storage_plugins_enable_alpha|default(false)|bool|lower }}
+app_tls_skip_verify_insecure = {{ grafana_external_image_storage_plugins_app_tls_skip_verify_insecure|default(false)|bool|lower }}

@@ -283,26 +283,80 @@ grafana_log_file_max_days:        7          # Expired days of log file(delete a
 ## [log.syslog]
 grafana_log_syslog_level:
 grafana_log_syslog_format: text
+grafana_log_syslog_network:
+grafana_log_syslog_address:
+grafana_log_syslog_facility:
+grafana_log_syslog_tag:
 
-#################################### AMPQ Event Publisher ##########################
-grafana_event_publisher_enabled:        false
-grafana_event_publisher_rabbitmq_url:   "amqp://localhost/"
-grafana_event_publisher_exchange:       grafana_events
 
-#################################### Dashboard JSON files ##########################
-grafana_dashboards_json_enabled:   false
-grafana_dashboards_json_path:      "{{ grafana_data_dir }}/dashboards"
+#################################### Alerting ############################
+grafana_alerting_enabled: true
+grafana_alerting_execute_alerts: true
+grafana_alerting_error_or_timeout: alerting
+grafana_alerting_nodata_or_nullvalues: no_data
+grafana_alerting_concurrent_render_limit: 5
+grafana_alerting_evaluation_timeout_seconds: 30
+grafana_alerting_notification_timeout_seconds: 30
+grafana_alerting_max_attempts: 3
 
-#################################### Usage Quotas ##########################
-grafana_quota_enabled: false
-#### set quotas to -1 to make unlimited. ####
-grafana_quota_org_user:           10     # limit number of users per Org.
-grafana_quota_org_dashboard:      100    # limit number of dashboards per Org.
-grafana_quota_org_data_source:    10     # limit number of data_sources per Org.
-grafana_quota_org_api_key:        10     # limit number of api_keys per Org.
-grafana_quota_user_org:           10     # limit number of orgs a user can create.
-grafana_quota_global_user:        -1     # Global limit of users.
-grafana_quota_global_org:         -1     # global limit of orgs.
-grafana_quota_global_dashboard:   -1     # global limit of dashboards
-grafana_quota_global_api_key:     -1     # global limit of api_keys
-grafana_quota_global_session:     -1     # global limit on number of logged in users.
+#################################### Explore #############################
+grafana_explore_enabled: true
+
+#################################### Internal Grafana Metrics ##########################
+grafana_metrics_enabled: true
+grafana_metrics_interval_seconds: 10
+grafana_metrics_graphite_address:
+grafana_metrics_graphite_prefix: "prod.grafana.%(instance_name)s."
+
+#################################### Distributed tracing ############
+grafana_tracing_jaeger_address: "localhost:6831"
+grafana_tracing_jaeger_always_included_tag: "tag1:value1"
+grafana_tracing_jaeger_sampler_type: const
+grafana_tracing_jaeger_sampler_param: 1
+
+#################################### Grafana.com integration  ##########################
+grafana_dashboard_import_url: https://grafana.com
+
+#################################### External image storage ##########################
+# Used for uploading images to public servers so they can be included in slack/email messages.
+# you can choose between (s3, webdav, gcs, azure_blob, local)
+grafana_external_image_storage_provider:
+
+# [external_image_storage.s3]
+grafana_external_image_storage_s3_bucket:
+grafana_external_image_storage_s3_region:
+grafana_external_image_storage_s3_path:
+grafana_external_image_storage_s3_access_key:
+grafana_external_image_storage_s3_secret_key:
+
+# [external_image_storage.webdav]
+grafana_external_image_storage_webdav_url:
+grafana_external_image_storage_webdav_public_url:
+grafana_external_image_storage_webdav_username:
+grafana_external_image_storage_webdav_password:
+
+# [external_image_storage.gcs]
+grafana_external_image_storage_gcs_key_file:
+grafana_external_image_storage_gcs_bucket:
+grafana_external_image_storage_gcs_path:
+
+# [external_image_storage.azure_blob]
+grafana_external_image_storage_azure_blob_account_name:
+grafana_external_image_storage_azure_blob_account_key:
+grafana_external_image_storage_azure_blob_container_name:
+
+# [rendering]
+grafana_external_image_storage_rendering_server_url:
+grafana_external_image_storage_rendering_callback_url:
+
+# [enterprise]
+grafana_external_image_storage_enterprise_license_path:
+
+# [panels]
+grafana_external_image_storage_panels_disable_sanitize_html: false
+
+# [plugins]
+grafana_external_image_storage_plugins_enable_alpha: false
+grafana_external_image_storage_plugins_app_tls_skip_verify_insecure: false
+
+
