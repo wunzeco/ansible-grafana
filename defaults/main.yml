@@ -2,7 +2,6 @@
 grafana_user:  grafana
 grafana_group: "{{ grafana_user }}"
 
-
 #############
 ## Package
 grafana_version: '*'                # e.g. 6.0.0 or '*' for latest
@@ -291,7 +290,6 @@ grafana_log_syslog_address:
 grafana_log_syslog_facility:
 grafana_log_syslog_tag:
 
-
 #################################### Alerting ############################
 grafana_alerting_enabled: true
 grafana_alerting_execute_alerts: true
@@ -361,5 +359,3 @@ grafana_external_image_storage_panels_disable_sanitize_html: false
 # [plugins]
 grafana_external_image_storage_plugins_enable_alpha: false
 grafana_external_image_storage_plugins_app_tls_skip_verify_insecure: false
-
-

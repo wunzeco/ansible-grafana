@@ -22,7 +22,8 @@
   when: grafana_auth_ldap_enabled
   notify: Restart grafana
 
-- set_fact: _startup_env_vars_dir=/etc/sysconfig
+- name: Set a fact for startup environment vars directory
+  set_fact: _startup_env_vars_dir=/etc/sysconfig
   when: ansible_os_family|lower == 'redhat'
 
 - name: Update grafana startup script envrionment variables file
