@@ -2,17 +2,13 @@
 
 - name: Download and install grafana apt public signing key
   apt_key:
-    url:   "{{ grafana_signing_key_url }}"
-    state: present
+    url: "{{ grafana_signing_key_url }}"
 
 - name: Add grafana apt repository definition to apt sources list
-  apt_repository: 
-    repo:         "{{ grafana_apt_repo }}"
-    update_cache: yes
-    state:        present
+  apt_repository:
+    repo: "{{ grafana_apt_repo }}"
 
 - name: Install grafana
   apt:
-    name:  "grafana={{ grafana_version|default('*') }}"
-    state: present
+    name: "grafana={{ grafana_version|default('*') }}"
   notify: Restart grafana

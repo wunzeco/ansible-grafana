@@ -26,6 +26,8 @@
 - name: Update repo cache for grafana repo
   command: yum -q makecache -y --disablerepo=* --enablerepo=grafana
   when: import_key|changed
+  args:
+    warn: False
 
 - name: Install grafana
   yum:
