@@ -5,20 +5,17 @@
     name: grafana
     description: Grafana repository
     baseurl:   "{{ grafana_yum_repo_baseurl }}"
-    gpgkey:    "{{ grafana_signing_key_url }} {{ grafana_yum_signing_key_url }}"
+    gpgkey:    "{{ grafana_signing_key_url }}"
     gpgcheck:  yes
     enabled:   yes
     sslverify: yes
     sslcacert: /etc/pki/tls/certs/ca-bundle.crt
     repo_gpgcheck: yes
 
-- name: Import grafana rpm keys
+- name: Import grafana rpm key
   rpm_key:
     state: present
-    key: "{{ item }}"
-  with_items:
-    - "{{ grafana_signing_key_url }}"
-    - "{{ grafana_yum_signing_key_url }}"
+    key: "{{ grafana_signing_key_url }}"
   register: import_key
 
 # Note: The task following task is a workaround for the error below:
