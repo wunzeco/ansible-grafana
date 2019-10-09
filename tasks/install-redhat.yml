@@ -22,7 +22,7 @@
 #       "Failure talking to yum: failure: repodata/repomd.xml from grafana: [Errno 256] No more mirrors to try.\nhttps://packagecloud.io/grafana/stable/el/6/x86_64/repodata/repomd.xml: [Errno -1] repomd.xml signature could not be verified for grafana"
 - name: Update repo cache for grafana repo
   command: yum -q makecache -y --disablerepo=* --enablerepo=grafana
-  when: import_key|changed
+  when: import_key is changed
   args:
     warn: False
 
